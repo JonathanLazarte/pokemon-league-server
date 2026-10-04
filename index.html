@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="sidenav.css" />
+	<title></title>
+</head>
+
+<body>
+    <nav>
+      <a class="item">Home</a>
+      <a class="item">About</a>
+      <div class="item">
+        Skills
+        <div class="dropdown">
+          <div>
+            <a>React</a>
+            <a>Angular</a>
+            <a>Vue</a>
+          </div>
+        </div>
+      </div>
+      <a class="item">Contact</a>
+      <div class="underline"></div>
+    </nav>
+    <div class="sidenav"></div>
+    <div class="overlay"></div>
+    <button class="burger" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+      <i class="fa-solid fa-close"></i>
+    </button>
+    <aside>
+      <a>Home</a>
+      <a>Install</a>
+      <a>Blog</a>
+      <h3>Product</h3>
+      <a>Why SurrealDB?</a>
+      <a>Features</a>
+      <a>Releases</a>
+      <a>Roadmap</a>
+      <a>Documentation</a>
+      <button>Join cloud waitlist</button>
+    </aside>
+        <input type="search"  onkeyup="champsSearch(event)"></input>
+<main ></main>
+
+</body>
+
+
+
+<style>
+    @font-face {
+  font-family: LoL;
+  src: url(./fonts/BeaufortforLOL-Medium.ttf);
+}
+@font-face{
+    font-family: regularLoL;
+    src: url(./fonts/Spiegel-RegularItalic.otf);
+}
+@font-face{
+    font-family: boldLoL;
+    src: url("./fonts/Spiegel-BoldItalic.otf");
+}
+    @keyframes example {
+  from {border: 1px solid red;}
+  to {border: 1px solid blue;}
+}
+    article{
+        opacity: 0.9;
+        animation-name: example;
+        animation-duration: 1s;
+        width: 350px;
+        height: 650px;
+        overflow: hidden;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+    article:hover{
+        border: 2px solid #fafafa;
+        opacity: 1;
+    }
+    article:hover .title{
+    }
+    article .title{
+        width: 70%;
+        transition: all 0.3s;
+        font-size: 18px;
+        border-radius: 4px;
+    }   
+    article .pokemon{
+        scale: 2.5;
+        height: auto;
+        width: auto;
+    }
+    article img{
+        width: 75px;
+        scale: 1;
+    }
+    img[src=".undefinedshield.png"] {
+            display: none;
+        }
+    article .info{
+        color: white;
+        height: 30%;
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-content: flex-start;
+        justify-content: flex-end;
+        align-items: flex-start;
+    }
+    article .info .types{
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    article .info .types{
+        margin-bottom: 15px;
+    }
+    article .info p{
+        height: 100px!important;
+        overflow: hidden;
+    }
+    main{
+        width: 80%;
+        margin: auto;
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        justify-items: center;
+        align-items: center;
+        align-content: space-around;
+
+    }
+    body {
+        margin: 0px;
+        user-select: none;
+        color: white;
+        background-size: cover;
+        background-attachment: fixed;
+        font-family: boldLoL;
+        text-stroke: 5px black;
+    }
+</style>
+<script type="text/javascript">
+    var thePokemon = []
+    var pokemonSpecies = []
+
+const toggleMenu = () => document.body.classList.toggle("open");
+
+       
+fetch('http://localhost:5050/pokemons/data/species')
+    .then(response => response.json())
+    .then(data => {
+        pokemonSpecies = data;
+        console.log(pokemonSpecies[20].flavor_text_entries[26].flavor_text)
+    })
+
+const getAll = (type)=>{
+    console.log(type)
+    fetch(`http://localhost:5050/pokemons${type ? "?type="+type : ""}`)
+    .then(response => response.json())
+    .then(data => {
+        const pokemons = data
+        const html = pokemons.map(poke => {
+            return `<article onclick="{NextSkin(${pokemonSpecies[poke.id-1].names[7].name}, event)}">
+
+            <h2 class="title">${pokemonSpecies[poke.id-1].names[7].name}<!----></h2>
+            <img class="pokemon" id=0 src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${poke.id}.gif">
+            <div class="info">
+                <span class="types"><img src=".${poke.types[0].type.url}shield.png"><img src=".${poke.types[1]?.type?.url}shield.png"><img src=".${poke.types[2]?.type?.url}shield.png"></span>
+                <span>Height: ${poke.height}m</span>
+                <span>Weight: ${poke.weight}kg</span>
+                <p>${pokemonSpecies[poke.id -1]?.flavor_text_entries[26]?.flavor_text}</p>
+            <div>
+
+            </article>`
+        }).join('')
+        document.querySelector('main').innerHTML = html
+    })
+}
+const getAllUser = ()=>{
+    fetch(`http://localhost:5050/pokemons/users/pokemon`, {
+        method: 'POST',
+        headers:{ 'Content-Type': 'application/json'}, 
+        body: JSON.stringify({
+            id:"198b73c5-50b6-4fbc-a7dc-d93a6c2ec1d6"
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const pokemons = data
+        console.log(data)
+        const html = pokemons.map(poke => {
+            return `<article>
+
+            <h2 class="title">${pokemonSpecies[poke.id-1].names[7].name}<!----></h2>
+            <img class="pokemon" id=0 src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${poke.id}.gif">
+            <div class="info">
+                <span class="types"><img src=".${poke.types[0].type.url}shield.png"><img src=".${poke.types[1]?.type?.url}shield.png"><img src=".${poke.types[2]?.type?.url}shield.png"></span>
+                <span>Height: ${poke.height}m</span>
+                <span>Weight: ${poke.weight}kg</span>
+                <p>${pokemonSpecies[poke.id -1]?.flavor_text_entries[26]?.flavor_text}</p>
+            <div>
+
+            </article>`
+        }).join('')
+        document.querySelector('main').innerHTML = html
+    })
+}
+
+getAll()
+
+    const champsSearch = (e) =>{
+        let word = e.target.value
+        console.log(word)
+    fetch(`http://localhost:5050/pokemons/${word ? word : ""}`)
+    .then(response => response.json())
+    .then(data => {
+        const pokemons = data
+        const html = pokemons.map(poke => {
+            return `<article onclick="{NextSkin(${pokemonSpecies[poke.id-1].names[7].name}, event)}">
+
+            <h2 class="title">${pokemonSpecies[poke.id-1].names[7].name}<!----></h2>
+            <img class="pokemon" id=0 src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${poke.id}.gif">
+            <div class="info">
+                <span class="types"><img src=".${poke.types[0].type.url}shield.png"><img src=".${poke.types[1]?.type?.url}shield.png"><img src=".${poke.types[2]?.type?.url}shield.png"></span>
+                <span>Height: ${poke.height}m</span>
+                <span>Weight: ${poke.weight}kg</span>
+                <p>${pokemonSpecies[poke.id -1]?.flavor_text_entries[26]?.flavor_text}</p>
+            <div>
+
+            </article>`
+        }).join('')
+        document.querySelector('main').innerHTML = html
+    })
+    }
+    
+    
+    
+</script>
+</html>
