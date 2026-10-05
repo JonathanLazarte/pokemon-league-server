@@ -18,9 +18,9 @@ const io = new Server(server, {
     cors: { origin: ['http://localhost:5173','http://localhost:5175', 'http://localhost:8080', 'http://127.0.0.1:5173', 'https://liga-pokemon.vercel.app', "https://pokemon-league-pvp.vercel.app/", 'http://localhost:3000'], methods: ["GET", "POST"] },
     connectionStateRecovery: {}
 });
-const uri = "mongodb+srv://JonathanLazarte:Jonii1543104@pokemonleague.4awnj.mongodb.net/?retryWrites=true&w=majority&appName=PokemonLeague";
+const uri = process.env.MONGODB_KEY;
 const localurl = 'mongodb://localhost:27017/'
-const client = new MongoClient(localurl, {
+const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,

@@ -16,7 +16,7 @@ for(let i = 1; i < 7; i++){
 const uri = process.env.MONGODB_KEY;
 const localurl = 'mongodb://localhost:27017/'
 
-const client = new MongoClient(localurl, {
+const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
