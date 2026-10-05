@@ -13,7 +13,7 @@ const ACCEPTED_ORIGINS = [
 			'http://127.0.0.1:5173',
 			'https://liga-pokemon.vercel.app',
 			'http://localhost:3000',
-			'https://pokemon-league-pvp.vercel.app/',
+			'https://pokemon-league-pvp.vercel.app',
 			]
 const ACCEPTED_METHODS = ['GET', 'POST', 'PUT', 'DELETE'];
 export const corsMiddleware = ({acceptedOrigins = ACCEPTED_ORIGINS} = {}) => cors({
